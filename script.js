@@ -8,7 +8,7 @@ snake[0] = {
 }
 let direction = "right";
 let food = {
-    x: Math.floor(Math.random() * 15 +1) * box,     //math.random é um numero de 0 ate 1. Math.floor tira a parte flutuante, as casas decimais
+    x: Math.floor(Math.random() * 15 + 1) * box,     //math.random é um numero de 0 ate 1. Math.floor tira a parte flutuante, as casas decimais
     y: Math.floor(Math.random() * 15 + 1) * box
 }
 
@@ -39,10 +39,19 @@ function update (event){
 }
 
 function iniciarJogo(){
+    
     if(snake[0].x > 15 * box && direction == "right") snake[0].x = 0;//para fazer a cobra entrar em um lado e sair do outro do quadro
     if(snake[0].x < 0 && direction == "left") snake[0].x = 16 * box;
     if(snake[0].y > 15 * box && direction == "down") snake[0].y = 0;
     if(snake[0].y < 0 && direction == "up") snake[0].y = 16 * box;
+
+    //se a cabeca se chocar com o corpo o jogo acaba
+    for(i = 1; i < snake.length; i++){    //comeca de 1 pois 0 é a cabeca
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+            clearInterval(jogo);    //faz parar o setInterval
+            alert('Game Over');
+        }
+    }
 
     criarBG();
     criarCobra();
@@ -60,7 +69,7 @@ function iniciarJogo(){
     if(snakeX != food.x || snakeY != food.y){ //para que quando coma o tamanho aumente e uma nova comida seja gerada
         snake.pop();
     } else {
-        food.x = Math.floor(Math.random() * 15 +1) * box;     
+        food.x = Math.floor(Math.random() * 15 + 1) * box;     
         food.y = Math.floor(Math.random() * 15 + 1) * box;
     }   
 
@@ -74,3 +83,5 @@ function iniciarJogo(){
 }
 
 let jogo = setInterval(iniciarJogo, 100);   //tempo em milisgundos para renovar a tela 
+
+//corrigir bug cobra sai do campo
